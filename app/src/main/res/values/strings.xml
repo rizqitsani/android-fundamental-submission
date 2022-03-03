@@ -3,6 +3,8 @@
     <string name="title">Github User</string>
     <string name="dummy_name">Name</string>
     <string name="dummy_username">Username</string>
+    <string name="dummy_company">Company</string>
+    <string name="dummy_detail">Detail</string>
 
     <string-array name="username">
         <item>JakeWharton</item>

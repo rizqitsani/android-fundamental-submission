@@ -1,5 +1,6 @@
 package com.rizqitsani.githubuser
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,6 +52,19 @@ class MainActivity : AppCompatActivity() {
     private fun showRecyclerList() {
         supportActionBar?.title = "User List"
         binding.rvUsers.layoutManager = LinearLayoutManager(this)
-        binding.rvUsers.adapter = ListUserAdapter(list)
+        val listUserAdapter = ListUserAdapter(list)
+        binding.rvUsers.adapter = listUserAdapter
+
+        listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: User) {
+                showSelectedHero(data)
+            }
+        })
+    }
+
+    private fun showSelectedHero(user: User) {
+        val itemDetailIntent = Intent(this@MainActivity, UserDetailActivity::class.java)
+        itemDetailIntent.putExtra(UserDetailActivity.EXTRA_USER, user)
+        startActivity(itemDetailIntent)
     }
 }
