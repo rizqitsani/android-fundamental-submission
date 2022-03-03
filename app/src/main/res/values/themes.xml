@@ -17,4 +17,30 @@
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
+
+    <style name="ImageList">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="civ_border_color">#FF000000</item>
+        <item name="civ_border_width">1dp</item>
+    </style>
+
+    <style name="TextList">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="TextList.Title">
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextList.Subtitle">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">5</item>
+    </style>
 </resources>
