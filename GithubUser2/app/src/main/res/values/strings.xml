@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">GithubUser</string>
+    <string name="app_name">Github User</string>
+
+    <string name="search">Search</string>
+    <string name="search_hint">Input username</string>
+    <string name="welcome_message">Tap the search button to search user</string>
 </resources>
