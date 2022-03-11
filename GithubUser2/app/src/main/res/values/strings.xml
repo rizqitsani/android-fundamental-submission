@@ -4,4 +4,8 @@
     <string name="search">Search</string>
     <string name="search_hint">Input username</string>
     <string name="welcome_message">Tap the search button to search user</string>
+    <string name="not_found">User not found</string>
+
+    <string name="dummy_name">Name</string>
+    <string name="dummy_username">Username</string>
 </resources>

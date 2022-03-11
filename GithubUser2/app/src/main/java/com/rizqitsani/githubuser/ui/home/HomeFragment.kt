@@ -6,15 +6,19 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rizqitsani.githubuser.R
 import com.rizqitsani.githubuser.databinding.FragmentHomeBinding
+import com.rizqitsani.githubuser.domain.models.User
+import com.rizqitsani.githubuser.ui.home.adapter.ListUserAdapter
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var viewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +36,33 @@ class HomeFragment : Fragment() {
         binding.rvUser.addItemDecoration(itemDecoration)
 
         return view
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        this.viewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
+
+        this.viewModel.listUser.observe(requireActivity()) {
+            if (it.isNotEmpty()) {
+                binding.tvPlaceholder.visibility = View.GONE
+                binding.rvUser.visibility = View.VISIBLE
+            } else {
+                binding.tvPlaceholder.text = resources.getString(R.string.not_found)
+                binding.tvPlaceholder.visibility = View.VISIBLE
+                binding.rvUser.visibility = View.GONE
+            }
+
+            setUserListData(it)
+        }
+
+        this.viewModel.isLoading.observe(requireActivity()) {
+            showLoading(it)
+        }
+    }
+
+    private fun setUserListData(userList: List<User>) {
+        val adapter = ListUserAdapter(userList)
+        binding.rvUser.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -59,8 +90,7 @@ class HomeFragment : Fragment() {
 
     private fun searchUser(username: String?) {
         if (username != null) {
-            showLoading(true)
-//            viewModel.searchUser(username)
+            viewModel.searchUser(username)
         }
     }
 
