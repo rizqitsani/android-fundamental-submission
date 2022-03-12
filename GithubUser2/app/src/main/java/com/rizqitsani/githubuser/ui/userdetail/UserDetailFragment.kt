@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
+import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -13,11 +14,13 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rizqitsani.githubuser.R
 import com.rizqitsani.githubuser.databinding.FragmentUserDetailBinding
+import com.rizqitsani.githubuser.domain.models.UserDetail
 import com.rizqitsani.githubuser.ui.userdetail.adapter.SectionsPagerAdapter
 
 class UserDetailFragment : Fragment() {
     private var _binding: FragmentUserDetailBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: UserDetailViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,13 +38,51 @@ class UserDetailFragment : Fragment() {
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
 
+        viewModel.userDetail.observe(requireActivity()) {
+            setUserDetailData(it)
+        }
+
+        viewModel.isLoading.observe(requireActivity()) {
+            showLoading(it)
+        }
+
         return view
+    }
+
+    private fun setUserDetailData(userData: UserDetail) {
+        Glide.with(this)
+            .load(userData.avatarUrl)
+            .apply(RequestOptions().override(550, 550))
+            .into(binding.imgAvatar)
+
+        binding.tvUsername.text = userData.login
+        binding.tvFollowerCount.text = userData.followers.toString()
+        binding.tvFollowingCount.text = userData.following.toString()
+        binding.tvRepoCount.text = userData.publicRepos.toString()
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+            binding.imgAvatar.visibility = View.GONE
+            binding.tvUsername.visibility = View.GONE
+            binding.layoutFollowers.visibility = View.GONE
+            binding.tabLayout.visibility = View.GONE
+        } else {
+            binding.progressBar.visibility = View.GONE
+            binding.imgAvatar.visibility = View.VISIBLE
+            binding.tvUsername.visibility = View.VISIBLE
+            binding.layoutFollowers.visibility = View.VISIBLE
+            binding.tabLayout.visibility = View.VISIBLE
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val dataUser = UserDetailFragmentArgs.fromBundle(arguments as Bundle).user
+
+        viewModel.getUserDetail(dataUser.login)
 
         Glide.with(view)
             .load(dataUser.avatarUrl)
