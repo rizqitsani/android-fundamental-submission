@@ -9,5 +9,18 @@
         android:id="@+id/homeFragment"
         android:name="com.rizqitsani.githubuser.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userDetailFragment"
+        android:name="com.rizqitsani.githubuser.ui.userdetail.UserDetailFragment"
+        android:label="fragment_user_detail"
+        tools:layout="@layout/fragment_user_detail">
+        <argument
+            android:name="user"
+            app:argType="com.rizqitsani.githubuser.domain.models.User" />
+    </fragment>
 </navigation>

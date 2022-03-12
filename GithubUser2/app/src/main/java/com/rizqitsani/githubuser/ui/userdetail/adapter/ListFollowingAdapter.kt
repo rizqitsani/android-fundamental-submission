@@ -1,4 +1,4 @@
-package com.rizqitsani.githubuser.ui.home.adapter
+package com.rizqitsani.githubuser.ui.userdetail.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,23 +8,21 @@ import com.bumptech.glide.request.RequestOptions
 import com.rizqitsani.githubuser.databinding.ItemRowUserBinding
 import com.rizqitsani.githubuser.domain.models.User
 
-class ListUserAdapter(private val listUser: List<User>) :
-    RecyclerView.Adapter<ListUserAdapter.ViewHolder>() {
-    private lateinit var onItemClickCallback: OnItemClickCallback
-
-    interface OnItemClickCallback {
-        fun onItemClicked(data: User)
-    }
+class ListFollowingAdapter(private val listFollowing: List<User>) :
+    RecyclerView.Adapter<ListFollowingAdapter.ViewHolder>() {
 
     class ViewHolder(var binding: ItemRowUserBinding) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ViewHolder {
         val binding = ItemRowUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val (login, avatarUrl) = listUser[position]
+        val (login, avatarUrl) = listFollowing[position]
 
         Glide.with(holder.itemView.context)
             .load(avatarUrl)
@@ -32,12 +30,7 @@ class ListUserAdapter(private val listUser: List<User>) :
             .into(holder.binding.imgItemPhoto)
 
         holder.binding.tvItemUsername.text = login
-        holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listUser[holder.adapterPosition]) }
     }
 
-    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback
-    }
-
-    override fun getItemCount(): Int = listUser.size
+    override fun getItemCount(): Int = listFollowing.size
 }

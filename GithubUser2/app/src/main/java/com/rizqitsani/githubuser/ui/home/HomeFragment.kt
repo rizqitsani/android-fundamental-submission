@@ -6,7 +6,8 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rizqitsani.githubuser.R
@@ -17,8 +18,7 @@ import com.rizqitsani.githubuser.ui.home.adapter.ListUserAdapter
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var viewModel: HomeViewModel
+    private val viewModel by viewModels<HomeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,34 +35,37 @@ class HomeFragment : Fragment() {
         val itemDecoration = DividerItemDecoration(activity, layoutManager.orientation)
         binding.rvUser.addItemDecoration(itemDecoration)
 
-        return view
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        this.viewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
-
-        this.viewModel.listUser.observe(requireActivity()) {
-            if (it.isNotEmpty()) {
-                binding.tvPlaceholder.visibility = View.GONE
-                binding.rvUser.visibility = View.VISIBLE
-            } else {
-                binding.tvPlaceholder.text = resources.getString(R.string.not_found)
-                binding.tvPlaceholder.visibility = View.VISIBLE
-                binding.rvUser.visibility = View.GONE
-            }
-
+        viewModel.listUser.observe(requireActivity()) {
             setUserListData(it)
         }
 
-        this.viewModel.isLoading.observe(requireActivity()) {
+        viewModel.isLoading.observe(requireActivity()) {
             showLoading(it)
         }
+
+        return view
     }
 
     private fun setUserListData(userList: List<User>) {
-        val adapter = ListUserAdapter(userList)
-        binding.rvUser.adapter = adapter
+        if (userList.isNotEmpty()) {
+            binding.tvPlaceholder.visibility = View.GONE
+            binding.rvUser.visibility = View.VISIBLE
+        } else {
+            binding.tvPlaceholder.text = resources.getString(R.string.not_found)
+            binding.tvPlaceholder.visibility = View.VISIBLE
+            binding.rvUser.visibility = View.GONE
+        }
+
+        val listUserAdapter = ListUserAdapter(userList)
+        binding.rvUser.adapter = listUserAdapter
+
+        listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: User) {
+                val toUserDetailFragment =
+                    HomeFragmentDirections.actionHomeFragmentToUserDetailFragment(data)
+                view?.findNavController()?.navigate(toUserDetailFragment)
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
