@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.rizqitsani.githubuser.data.network.ApiConfig
 import com.rizqitsani.githubuser.data.network.response.FollowerResponse
+import com.rizqitsani.githubuser.data.network.response.FollowingResponse
 import com.rizqitsani.githubuser.data.network.response.UserDetailResponse
 import com.rizqitsani.githubuser.domain.models.User
 import com.rizqitsani.githubuser.domain.models.UserDetail
@@ -85,6 +86,36 @@ class UserDetailViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<List<FollowerResponse>>, t: Throwable) {
+                _isLoading.value = false
+                Log.e(TAG, "onFailure: ${t.message.toString()}")
+            }
+        })
+    }
+
+    fun getFollowing(username: String) {
+        _isLoading.value = true
+        val client = ApiConfig.getApiService().getFollowing(username)
+        client.enqueue(object: Callback<List<FollowingResponse>>{
+            override fun onResponse(
+                call: Call<List<FollowingResponse>>,
+                response: Response<List<FollowingResponse>>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful) {
+                    val responseFollowing = response.body()
+                    val convertedFollowing = ArrayList<User>()
+
+                    responseFollowing?.forEach {
+                        convertedFollowing.add(User(it.login, it.avatarUrl))
+                    }
+
+                    _listFollowing.postValue(convertedFollowing)
+                } else {
+                    Log.e(TAG, "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<List<FollowingResponse>>, t: Throwable) {
                 _isLoading.value = false
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }

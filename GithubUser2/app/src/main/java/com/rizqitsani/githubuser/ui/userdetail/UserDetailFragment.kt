@@ -48,6 +48,7 @@ class UserDetailFragment : Fragment() {
 
         viewModel.getUserDetail(dataUser.login)
         viewModel.getFollowers(dataUser.login)
+        viewModel.getFollowing(dataUser.login)
 
         viewModel.userDetail.observe(viewLifecycleOwner) {
             setUserDetailData(it)
