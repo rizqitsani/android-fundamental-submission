@@ -35,11 +35,25 @@ class FollowingFragment : Fragment() {
         viewModel.listFollowing.observe(viewLifecycleOwner) {
             setFollowingData(it)
         }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            showLoading(it)
+        }
     }
 
     private fun setFollowingData(following: List<User>) {
         val listFollowingAdapter = ListFollowingAdapter(following)
         binding.rvFollowing.adapter = listFollowingAdapter
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+            binding.rvFollowing.visibility = View.GONE
+        } else {
+            binding.progressBar.visibility = View.GONE
+            binding.rvFollowing.visibility = View.VISIBLE
+        }
     }
 
     override fun onDestroy() {
