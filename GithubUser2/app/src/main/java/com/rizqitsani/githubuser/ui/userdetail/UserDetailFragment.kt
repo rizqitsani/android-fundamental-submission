@@ -38,15 +38,31 @@ class UserDetailFragment : Fragment() {
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
 
-        viewModel.userDetail.observe(requireActivity()) {
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val dataUser = UserDetailFragmentArgs.fromBundle(arguments as Bundle).user
+
+        viewModel.getUserDetail(dataUser.login)
+        viewModel.getFollowers(dataUser.login)
+
+        viewModel.userDetail.observe(viewLifecycleOwner) {
             setUserDetailData(it)
         }
 
-        viewModel.isLoading.observe(requireActivity()) {
+        viewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
 
-        return view
+        Glide.with(this)
+            .load(dataUser.avatarUrl)
+            .apply(RequestOptions().override(550, 550))
+            .into(binding.imgAvatar)
+
+        binding.tvUsername.text = dataUser.login
     }
 
     private fun setUserDetailData(userData: UserDetail) {
@@ -77,19 +93,9 @@ class UserDetailFragment : Fragment() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val dataUser = UserDetailFragmentArgs.fromBundle(arguments as Bundle).user
-
-        viewModel.getUserDetail(dataUser.login)
-
-        Glide.with(view)
-            .load(dataUser.avatarUrl)
-            .apply(RequestOptions().override(550, 550))
-            .into(binding.imgAvatar)
-
-        binding.tvUsername.text = dataUser.login
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     companion object {

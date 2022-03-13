@@ -35,15 +35,19 @@ class HomeFragment : Fragment() {
         val itemDecoration = DividerItemDecoration(activity, layoutManager.orientation)
         binding.rvUser.addItemDecoration(itemDecoration)
 
-        viewModel.listUser.observe(requireActivity()) {
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.listUser.observe(viewLifecycleOwner) {
             setUserListData(it)
         }
 
-        viewModel.isLoading.observe(requireActivity()) {
+        viewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
-
-        return view
     }
 
     private fun setUserListData(userList: List<User>) {
