@@ -72,7 +72,17 @@ class UserDetailFragment : Fragment() {
             .apply(RequestOptions().override(550, 550))
             .into(binding.imgAvatar)
 
+        val details = listOfNotNull(
+            userData.name,
+            userData.company,
+            userData.location
+        ).joinToString(separator = " | ")
+
         binding.tvUsername.text = userData.login
+        binding.tvDetails.text = resources.getString(
+            R.string.dummy_details,
+            details
+        )
         binding.tvFollowerCount.text = userData.followers.toString()
         binding.tvFollowingCount.text = userData.following.toString()
         binding.tvRepoCount.text = userData.publicRepos.toString()
@@ -83,12 +93,14 @@ class UserDetailFragment : Fragment() {
             binding.progressBar.visibility = View.VISIBLE
             binding.imgAvatar.visibility = View.GONE
             binding.tvUsername.visibility = View.GONE
+            binding.tvDetails.visibility = View.GONE
             binding.layoutFollowers.visibility = View.GONE
             binding.tabLayout.visibility = View.GONE
         } else {
             binding.progressBar.visibility = View.GONE
             binding.imgAvatar.visibility = View.VISIBLE
             binding.tvUsername.visibility = View.VISIBLE
+            binding.tvDetails.visibility = View.VISIBLE
             binding.layoutFollowers.visibility = View.VISIBLE
             binding.tabLayout.visibility = View.VISIBLE
         }

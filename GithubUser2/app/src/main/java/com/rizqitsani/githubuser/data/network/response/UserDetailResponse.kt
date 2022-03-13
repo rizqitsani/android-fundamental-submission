@@ -22,6 +22,9 @@ data class UserDetailResponse(
 	@field:SerializedName("company")
 	val company: String?,
 
+	@field:SerializedName("location")
+	val location: String?,
+
 	@field:SerializedName("public_repos")
 	val publicRepos: Int,
 

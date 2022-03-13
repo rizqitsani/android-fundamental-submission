@@ -35,12 +35,26 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="@string/dummy_name"
+            android:text="@string/dummy_username"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/img_avatar"
             app:layout_constraintStart_toStartOf="@+id/img_avatar"
             app:layout_constraintTop_toBottomOf="@+id/img_avatar"
             app:layout_constraintVertical_bias="0.027" />
+
+        <TextView
+            android:id="@+id/tv_details"
+            android:layout_width="228dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/dummy_details"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_username"
+            app:layout_constraintStart_toStartOf="@+id/tv_username"
+            app:layout_constraintTop_toBottomOf="@+id/tv_username"
+            app:layout_constraintVertical_bias="0.0" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_followers"
@@ -48,10 +62,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tv_username"
+            app:layout_constraintEnd_toEndOf="@+id/tv_details"
             app:layout_constraintHorizontal_bias="0.488"
-            app:layout_constraintStart_toStartOf="@+id/tv_username"
-            app:layout_constraintTop_toBottomOf="@+id/tv_username"
+            app:layout_constraintStart_toStartOf="@+id/tv_details"
+            app:layout_constraintTop_toBottomOf="@+id/tv_details"
             app:layout_constraintVertical_bias="0.0">
 
             <TextView

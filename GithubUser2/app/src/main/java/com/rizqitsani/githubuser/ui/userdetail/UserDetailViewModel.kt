@@ -43,6 +43,7 @@ class UserDetailViewModel : ViewModel() {
                         responseUserDetail.avatarUrl,
                         responseUserDetail.name,
                         responseUserDetail.company,
+                        responseUserDetail.location,
                         responseUserDetail.bio,
                         responseUserDetail.publicRepos,
                         responseUserDetail.followers,
