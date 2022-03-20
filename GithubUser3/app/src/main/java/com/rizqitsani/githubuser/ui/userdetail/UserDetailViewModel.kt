@@ -44,7 +44,6 @@ class UserDetailViewModel : ViewModel() {
                         responseUserDetail.name,
                         responseUserDetail.company,
                         responseUserDetail.location,
-                        responseUserDetail.bio,
                         responseUserDetail.publicRepos,
                         responseUserDetail.followers,
                         responseUserDetail.following

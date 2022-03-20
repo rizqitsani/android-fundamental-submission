@@ -11,7 +11,7 @@ import com.rizqitsani.githubuser.domain.models.User
 class ListFollowingAdapter(private val listFollowing: List<User>) :
     RecyclerView.Adapter<ListFollowingAdapter.ViewHolder>() {
 
-    class ViewHolder(var binding: ItemRowUserBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemRowUserBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

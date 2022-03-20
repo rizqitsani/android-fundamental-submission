@@ -16,7 +16,7 @@ class ListUserAdapter(private val listUser: List<User>) :
         fun onItemClicked(data: User)
     }
 
-    class ViewHolder(var binding: ItemRowUserBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemRowUserBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRowUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)

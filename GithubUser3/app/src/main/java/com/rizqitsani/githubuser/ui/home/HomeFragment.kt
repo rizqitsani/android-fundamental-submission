@@ -17,23 +17,23 @@ import com.rizqitsani.githubuser.ui.home.adapter.ListUserAdapter
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private val viewModel by viewModels<HomeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val view = binding.root
+        val view = binding?.root
 
         setHasOptionsMenu(true)
 
         val layoutManager = LinearLayoutManager(activity)
-        binding.rvUser.layoutManager = layoutManager
+        binding?.rvUser?.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(activity, layoutManager.orientation)
-        binding.rvUser.addItemDecoration(itemDecoration)
+        binding?.rvUser?.addItemDecoration(itemDecoration)
 
         return view
     }
@@ -52,16 +52,16 @@ class HomeFragment : Fragment() {
 
     private fun setUserListData(userList: List<User>) {
         if (userList.isNotEmpty()) {
-            binding.tvPlaceholder.visibility = View.GONE
-            binding.rvUser.visibility = View.VISIBLE
+            binding?.tvPlaceholder?.visibility = View.GONE
+            binding?.rvUser?.visibility = View.VISIBLE
         } else {
-            binding.tvPlaceholder.text = resources.getString(R.string.not_found)
-            binding.tvPlaceholder.visibility = View.VISIBLE
-            binding.rvUser.visibility = View.GONE
+            binding?.tvPlaceholder?.text = resources.getString(R.string.not_found)
+            binding?.tvPlaceholder?.visibility = View.VISIBLE
+            binding?.rvUser?.visibility = View.GONE
         }
 
         val listUserAdapter = ListUserAdapter(userList)
-        binding.rvUser.adapter = listUserAdapter
+        binding?.rvUser?.adapter = listUserAdapter
 
         listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: User) {
@@ -102,8 +102,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-        binding.tvPlaceholder.visibility = View.GONE
+        binding?.progressBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding?.tvPlaceholder?.visibility = View.GONE
     }
 
     override fun onDestroy() {

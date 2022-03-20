@@ -13,20 +13,20 @@ import com.rizqitsani.githubuser.ui.userdetail.adapter.ListFollowingAdapter
 
 class FollowingFragment : Fragment() {
     private var _binding: FragmentFollowingBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private val viewModel: UserDetailViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentFollowingBinding.inflate(layoutInflater, container, false)
 
         val layoutManager = LinearLayoutManager(activity)
-        binding.rvFollowing.layoutManager = layoutManager
+        binding?.rvFollowing?.layoutManager = layoutManager
 
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,16 +43,16 @@ class FollowingFragment : Fragment() {
 
     private fun setFollowingData(following: List<User>) {
         val listFollowingAdapter = ListFollowingAdapter(following)
-        binding.rvFollowing.adapter = listFollowingAdapter
+        binding?.rvFollowing?.adapter = listFollowingAdapter
     }
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-            binding.rvFollowing.visibility = View.GONE
+            binding?.progressBar?.visibility = View.VISIBLE
+            binding?.rvFollowing?.visibility = View.GONE
         } else {
-            binding.progressBar.visibility = View.GONE
-            binding.rvFollowing.visibility = View.VISIBLE
+            binding?.progressBar?.visibility = View.GONE
+            binding?.rvFollowing?.visibility = View.VISIBLE
         }
     }
 

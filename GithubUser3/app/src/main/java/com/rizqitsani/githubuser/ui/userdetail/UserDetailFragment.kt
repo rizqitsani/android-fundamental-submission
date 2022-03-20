@@ -16,24 +16,25 @@ import com.rizqitsani.githubuser.R
 import com.rizqitsani.githubuser.databinding.FragmentUserDetailBinding
 import com.rizqitsani.githubuser.domain.models.UserDetail
 import com.rizqitsani.githubuser.ui.userdetail.adapter.SectionsPagerAdapter
+import de.hdodenhof.circleimageview.CircleImageView
 
 class UserDetailFragment : Fragment() {
     private var _binding: FragmentUserDetailBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private val viewModel: UserDetailViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentUserDetailBinding.inflate(inflater, container, false)
-        val view = binding.root
+        val view = binding?.root
 
         val sectionsPagerAdapter = SectionsPagerAdapter(requireActivity())
-        val viewPager: ViewPager2 = binding.viewPager
+        val viewPager: ViewPager2 = binding?.viewPager as ViewPager2
         viewPager.adapter = sectionsPagerAdapter
-        val tabs: TabLayout = binding.tabLayout
+        val tabs: TabLayout = binding?.tabLayout as TabLayout
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
@@ -61,16 +62,16 @@ class UserDetailFragment : Fragment() {
         Glide.with(this)
             .load(dataUser.avatarUrl)
             .apply(RequestOptions().override(550, 550))
-            .into(binding.imgAvatar)
+            .into(binding?.imgAvatar as CircleImageView)
 
-        binding.tvUsername.text = dataUser.login
+        binding?.tvUsername?.text = dataUser.login
     }
 
     private fun setUserDetailData(userData: UserDetail) {
         Glide.with(this)
             .load(userData.avatarUrl)
             .apply(RequestOptions().override(550, 550))
-            .into(binding.imgAvatar)
+            .into(binding?.imgAvatar as CircleImageView)
 
         val details = listOfNotNull(
             userData.name,
@@ -78,31 +79,31 @@ class UserDetailFragment : Fragment() {
             userData.location
         ).joinToString(separator = " | ")
 
-        binding.tvUsername.text = userData.login
-        binding.tvDetails.text = resources.getString(
+        binding?.tvUsername?.text = userData.login
+        binding?.tvDetails?.text = resources.getString(
             R.string.dummy_details,
             details
         )
-        binding.tvFollowerCount.text = userData.followers.toString()
-        binding.tvFollowingCount.text = userData.following.toString()
-        binding.tvRepoCount.text = userData.publicRepos.toString()
+        binding?.tvFollowerCount?.text = userData.followers.toString()
+        binding?.tvFollowingCount?.text = userData.following.toString()
+        binding?.tvRepoCount?.text = userData.publicRepos.toString()
     }
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-            binding.imgAvatar.visibility = View.GONE
-            binding.tvUsername.visibility = View.GONE
-            binding.tvDetails.visibility = View.GONE
-            binding.layoutFollowers.visibility = View.GONE
-            binding.tabLayout.visibility = View.GONE
+            binding?.progressBar?.visibility = View.VISIBLE
+            binding?.imgAvatar?.visibility = View.GONE
+            binding?.tvUsername?.visibility = View.GONE
+            binding?.tvDetails?.visibility = View.GONE
+            binding?.layoutFollowers?.visibility = View.GONE
+            binding?.tabLayout?.visibility = View.GONE
         } else {
-            binding.progressBar.visibility = View.GONE
-            binding.imgAvatar.visibility = View.VISIBLE
-            binding.tvUsername.visibility = View.VISIBLE
-            binding.tvDetails.visibility = View.VISIBLE
-            binding.layoutFollowers.visibility = View.VISIBLE
-            binding.tabLayout.visibility = View.VISIBLE
+            binding?.progressBar?.visibility = View.GONE
+            binding?.imgAvatar?.visibility = View.VISIBLE
+            binding?.tvUsername?.visibility = View.VISIBLE
+            binding?.tvDetails?.visibility = View.VISIBLE
+            binding?.layoutFollowers?.visibility = View.VISIBLE
+            binding?.tabLayout?.visibility = View.VISIBLE
         }
     }
 

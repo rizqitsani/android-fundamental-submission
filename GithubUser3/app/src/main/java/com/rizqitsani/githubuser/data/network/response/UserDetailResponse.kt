@@ -16,9 +16,6 @@ data class UserDetailResponse(
 	@field:SerializedName("name")
 	val name: String,
 
-	@field:SerializedName("bio")
-	val bio: String?,
-
 	@field:SerializedName("company")
 	val company: String?,
 

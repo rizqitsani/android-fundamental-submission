@@ -11,7 +11,7 @@ import com.rizqitsani.githubuser.domain.models.User
 class ListFollowerAdapter(private val listFollower: List<User>) :
     RecyclerView.Adapter<ListFollowerAdapter.ViewHolder>() {
 
-    class ViewHolder(var binding: ItemRowUserBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemRowUserBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRowUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)

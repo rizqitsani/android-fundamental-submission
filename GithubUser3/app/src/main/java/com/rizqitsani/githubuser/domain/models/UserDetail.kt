@@ -10,7 +10,6 @@ data class UserDetail(
     var name: String? = null,
     var company: String? = null,
     var location: String? = null,
-    var bio: String? = null,
     var publicRepos: Int? = null,
     var followers: Int? = null,
     var following: Int? = null,
