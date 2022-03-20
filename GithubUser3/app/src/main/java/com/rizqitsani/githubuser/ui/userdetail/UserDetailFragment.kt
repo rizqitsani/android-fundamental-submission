@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
@@ -59,6 +60,10 @@ class UserDetailFragment : Fragment() {
             showLoading(it)
         }
 
+        viewModel.status.observe(viewLifecycleOwner) {
+            showStatus(it)
+        }
+
         Glide.with(this)
             .load(dataUser.avatarUrl)
             .apply(RequestOptions().override(550, 550))
@@ -104,6 +109,12 @@ class UserDetailFragment : Fragment() {
             binding?.tvDetails?.visibility = View.VISIBLE
             binding?.layoutFollowers?.visibility = View.VISIBLE
             binding?.tabLayout?.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showStatus(message: String) {
+        if (message != "") {
+            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -47,6 +48,10 @@ class HomeFragment : Fragment() {
 
         viewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
+        }
+
+        viewModel.status.observe(viewLifecycleOwner) {
+            showStatus(it)
         }
     }
 
@@ -104,6 +109,12 @@ class HomeFragment : Fragment() {
     private fun showLoading(isLoading: Boolean) {
         binding?.progressBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
         binding?.tvPlaceholder?.visibility = View.GONE
+    }
+
+    private fun showStatus(message: String) {
+        if (message != "") {
+            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroy() {

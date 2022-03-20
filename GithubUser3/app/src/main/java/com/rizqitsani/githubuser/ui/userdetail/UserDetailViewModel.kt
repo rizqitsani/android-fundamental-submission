@@ -27,8 +27,12 @@ class UserDetailViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    private val _status = MutableLiveData<String>()
+    val status: LiveData<String> = _status
+
     fun getUserDetail(username: String) {
         _isLoading.value = true
+        _status.value = ""
         val client = ApiConfig.getApiService().getUserDetail(username)
         client.enqueue(object : Callback<UserDetailResponse> {
             override fun onResponse(
@@ -49,6 +53,7 @@ class UserDetailViewModel : ViewModel() {
                         responseUserDetail.following
                     )
 
+                    _status.value = ""
                     _userDetail.value = convertedUserDetail
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
@@ -57,6 +62,7 @@ class UserDetailViewModel : ViewModel() {
 
             override fun onFailure(call: Call<UserDetailResponse>, t: Throwable) {
                 _isLoading.value = false
+                _status.value = "Terjadi kesalahan. Mohon coba beberapa saat lagi"
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
         })
@@ -64,6 +70,7 @@ class UserDetailViewModel : ViewModel() {
 
     fun getFollowers(username: String) {
         _isLoading.value = true
+        _status.value = ""
         val client = ApiConfig.getApiService().getFollowers(username)
         client.enqueue(object: Callback<List<FollowerResponse>>{
             override fun onResponse(
@@ -79,6 +86,7 @@ class UserDetailViewModel : ViewModel() {
                         convertedFollowers.add(User(it.login, it.avatarUrl))
                     }
 
+                    _status.value = ""
                     _listFollower.postValue(convertedFollowers)
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
@@ -87,6 +95,7 @@ class UserDetailViewModel : ViewModel() {
 
             override fun onFailure(call: Call<List<FollowerResponse>>, t: Throwable) {
                 _isLoading.value = false
+                _status.value = "Terjadi kesalahan. Mohon coba beberapa saat lagi"
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
         })
@@ -94,6 +103,7 @@ class UserDetailViewModel : ViewModel() {
 
     fun getFollowing(username: String) {
         _isLoading.value = true
+        _status.value = ""
         val client = ApiConfig.getApiService().getFollowing(username)
         client.enqueue(object: Callback<List<FollowingResponse>>{
             override fun onResponse(
@@ -109,6 +119,7 @@ class UserDetailViewModel : ViewModel() {
                         convertedFollowing.add(User(it.login, it.avatarUrl))
                     }
 
+                    _status.value = ""
                     _listFollowing.postValue(convertedFollowing)
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
@@ -117,6 +128,7 @@ class UserDetailViewModel : ViewModel() {
 
             override fun onFailure(call: Call<List<FollowingResponse>>, t: Throwable) {
                 _isLoading.value = false
+                _status.value = "Terjadi kesalahan. Mohon coba beberapa saat lagi"
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
         })

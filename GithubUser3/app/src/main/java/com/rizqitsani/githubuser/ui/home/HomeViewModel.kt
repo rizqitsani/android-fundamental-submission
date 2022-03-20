@@ -18,8 +18,12 @@ class HomeViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    private val _status = MutableLiveData<String>()
+    val status: LiveData<String> = _status
+
     fun searchUser(username: String) {
         _isLoading.value = true
+        _status.value = ""
         val client = ApiConfig.getApiService().searchUser(username)
         client.enqueue(object: Callback<SearchUserResponse> {
             override fun onResponse(
@@ -35,6 +39,7 @@ class HomeViewModel : ViewModel() {
                         convertedUsers.add(User(it.login, it.avatarUrl))
                     }
 
+                    _status.value = ""
                     _listUser.value = convertedUsers
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
@@ -43,6 +48,7 @@ class HomeViewModel : ViewModel() {
 
             override fun onFailure(call: Call<SearchUserResponse>, t: Throwable) {
                 _isLoading.value = false
+                _status.value = "Terjadi kesalahan. Mohon coba beberapa saat lagi"
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
         })
