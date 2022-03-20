@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_userDetailFragment"
             app:destination="@id/userDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/userDetailFragment"
@@ -23,4 +26,9 @@
             android:name="user"
             app:argType="com.rizqitsani.githubuser.domain.models.User" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.rizqitsani.githubuser.ui.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

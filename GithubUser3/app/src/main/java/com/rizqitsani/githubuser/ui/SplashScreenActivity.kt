@@ -3,7 +3,7 @@ package com.rizqitsani.githubuser.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.rizqitsani.githubuser.MainActivity
+import com.rizqitsani.githubuser.ui.main.MainActivity
 
 class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

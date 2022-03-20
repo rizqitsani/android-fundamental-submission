@@ -25,7 +25,7 @@ class HomeViewModel : ViewModel() {
         _isLoading.value = true
         _status.value = ""
         val client = ApiConfig.getApiService().searchUser(username)
-        client.enqueue(object: Callback<SearchUserResponse> {
+        client.enqueue(object : Callback<SearchUserResponse> {
             override fun onResponse(
                 call: Call<SearchUserResponse>,
                 response: Response<SearchUserResponse>
@@ -54,7 +54,7 @@ class HomeViewModel : ViewModel() {
         })
     }
 
-    companion object{
+    companion object {
         private const val TAG = "HomeViewModel"
     }
 }
