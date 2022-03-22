@@ -16,21 +16,24 @@ class FollowingFragment : Fragment() {
     private val binding get() = _binding
     private val viewModel: UserDetailViewModel by activityViewModels()
 
+    private lateinit var listFollowingAdapter: ListFollowingAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentFollowingBinding.inflate(layoutInflater, container, false)
-
-        val layoutManager = LinearLayoutManager(activity)
-        binding?.rvFollowing?.layoutManager = layoutManager
-
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        listFollowingAdapter = ListFollowingAdapter()
+        val layoutManager = LinearLayoutManager(activity)
+        binding?.rvFollowing?.layoutManager = layoutManager
+        binding?.rvFollowing?.adapter = listFollowingAdapter
 
         viewModel.listFollowing.observe(viewLifecycleOwner) {
             setFollowingData(it)
@@ -42,8 +45,7 @@ class FollowingFragment : Fragment() {
     }
 
     private fun setFollowingData(following: List<User>) {
-        val listFollowingAdapter = ListFollowingAdapter(following)
-        binding?.rvFollowing?.adapter = listFollowingAdapter
+        listFollowingAdapter.setListFollowing(following)
     }
 
     private fun showLoading(isLoading: Boolean) {

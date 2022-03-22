@@ -2,14 +2,24 @@ package com.rizqitsani.githubuser.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.rizqitsani.githubuser.databinding.ItemRowUserBinding
 import com.rizqitsani.githubuser.domain.models.User
+import com.rizqitsani.githubuser.helper.UserDiffCallback
 
-class ListUserAdapter(private val listUser: List<User>) :
-    RecyclerView.Adapter<ListUserAdapter.ViewHolder>() {
+class ListUserAdapter : RecyclerView.Adapter<ListUserAdapter.ViewHolder>() {
+    private val listUser = ArrayList<User>()
+    fun setListUser(listUser: List<User>) {
+        val diffCallback = UserDiffCallback(this.listUser, listUser)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        this.listUser.clear()
+        this.listUser.addAll(listUser)
+        diffResult.dispatchUpdatesTo(this)
+    }
+
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     interface OnItemClickCallback {

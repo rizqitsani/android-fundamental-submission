@@ -16,6 +16,8 @@ class FollowerFragment : Fragment() {
     private val binding get() = _binding
     private val viewModel: UserDetailViewModel by activityViewModels()
 
+    private lateinit var listFollowerAdapter: ListFollowerAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,8 +25,10 @@ class FollowerFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentFollowerBinding.inflate(inflater, container, false)
 
+        listFollowerAdapter = ListFollowerAdapter()
         val layoutManager = LinearLayoutManager(activity)
         binding?.rvFollower?.layoutManager = layoutManager
+        binding?.rvFollower?.adapter = listFollowerAdapter
 
         return binding?.root
     }
@@ -42,8 +46,7 @@ class FollowerFragment : Fragment() {
     }
 
     private fun setFollowersData(followers: List<User>) {
-        val listFollowerAdapter = ListFollowerAdapter(followers)
-        binding?.rvFollower?.adapter = listFollowerAdapter
+        listFollowerAdapter.setListFollower(followers)
     }
 
     private fun showLoading(isLoading: Boolean) {

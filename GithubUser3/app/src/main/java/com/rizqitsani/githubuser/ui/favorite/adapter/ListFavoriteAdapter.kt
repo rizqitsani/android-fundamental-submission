@@ -9,6 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.rizqitsani.githubuser.data.database.Favorite
 import com.rizqitsani.githubuser.databinding.ItemRowUserBinding
 import com.rizqitsani.githubuser.domain.models.User
+import com.rizqitsani.githubuser.helper.FavoriteDiffCallback
 
 class ListFavoriteAdapter :
     RecyclerView.Adapter<ListFavoriteAdapter.ViewHolder>() {

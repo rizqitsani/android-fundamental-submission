@@ -22,26 +22,30 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding
     private val viewModel by viewModels<HomeViewModel>()
 
+    private lateinit var listUserAdapter: ListUserAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val view = binding?.root
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setHasOptionsMenu(true)
+
+        listUserAdapter = ListUserAdapter()
 
         val layoutManager = LinearLayoutManager(activity)
         binding?.rvUser?.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(activity, layoutManager.orientation)
         binding?.rvUser?.addItemDecoration(itemDecoration)
 
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        binding?.rvUser?.adapter = listUserAdapter
 
         viewModel.listUser.observe(viewLifecycleOwner) {
             setUserListData(it)
@@ -66,8 +70,7 @@ class HomeFragment : Fragment() {
             binding?.rvUser?.visibility = View.GONE
         }
 
-        val listUserAdapter = ListUserAdapter(userList)
-        binding?.rvUser?.adapter = listUserAdapter
+        listUserAdapter.setListUser(userList)
 
         listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: User) {

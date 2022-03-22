@@ -29,17 +29,16 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentFavoriteBinding.inflate(layoutInflater)
-
-        adapter = ListFavoriteAdapter()
-        binding?.rvFavorite?.layoutManager = LinearLayoutManager(activity)
-        binding?.rvFavorite?.setHasFixedSize(true)
-        binding?.rvFavorite?.adapter = adapter
-
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        adapter = ListFavoriteAdapter()
+        binding?.rvFavorite?.layoutManager = LinearLayoutManager(activity)
+        binding?.rvFavorite?.setHasFixedSize(true)
+        binding?.rvFavorite?.adapter = adapter
 
         viewModel.getAllFavorites().observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {

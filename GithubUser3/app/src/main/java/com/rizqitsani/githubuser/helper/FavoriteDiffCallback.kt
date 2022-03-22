@@ -1,4 +1,4 @@
-package com.rizqitsani.githubuser.ui.favorite.adapter
+package com.rizqitsani.githubuser.helper
 
 import androidx.recyclerview.widget.DiffUtil
 import com.rizqitsani.githubuser.data.database.Favorite

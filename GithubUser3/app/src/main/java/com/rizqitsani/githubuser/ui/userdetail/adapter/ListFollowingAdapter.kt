@@ -2,14 +2,23 @@ package com.rizqitsani.githubuser.ui.userdetail.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.rizqitsani.githubuser.databinding.ItemRowUserBinding
 import com.rizqitsani.githubuser.domain.models.User
+import com.rizqitsani.githubuser.helper.UserDiffCallback
 
-class ListFollowingAdapter(private val listFollowing: List<User>) :
-    RecyclerView.Adapter<ListFollowingAdapter.ViewHolder>() {
+class ListFollowingAdapter : RecyclerView.Adapter<ListFollowingAdapter.ViewHolder>() {
+    private val listFollowing = ArrayList<User>()
+    fun setListFollowing(listFollowing: List<User>) {
+        val diffCallback = UserDiffCallback(this.listFollowing, listFollowing)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        this.listFollowing.clear()
+        this.listFollowing.addAll(listFollowing)
+        diffResult.dispatchUpdatesTo(this)
+    }
 
     class ViewHolder(val binding: ItemRowUserBinding) : RecyclerView.ViewHolder(binding.root)
 
