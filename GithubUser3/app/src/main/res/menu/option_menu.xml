@@ -8,6 +8,10 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|always" />
     <group android:menuCategory="container">
+        <item android:id="@+id/favoriteFragment"
+            android:title="@string/favorites"
+            android:icon = "@drawable/ic_baseline_favorite_24"
+            app:showAsAction="always" />
         <item android:id="@+id/settingsFragment"
             android:title="@string/settings"
             android:icon = "@drawable/ic_baseline_settings_24"

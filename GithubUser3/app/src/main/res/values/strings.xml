@@ -16,4 +16,7 @@
     <string name="dark_mode">Dark Mode</string>
 
     <string name="favorites">Favorites</string>
+    <string name="favorite_empty">No favorites yet!</string>
+    <string name="added">Added to favorite</string>
+    <string name="removed">Removed from favorites</string>
 </resources>
