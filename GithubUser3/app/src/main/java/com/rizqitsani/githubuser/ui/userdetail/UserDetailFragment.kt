@@ -1,10 +1,8 @@
 package com.rizqitsani.githubuser.ui.userdetail
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.activityViewModels
@@ -14,7 +12,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rizqitsani.githubuser.R
+import com.rizqitsani.githubuser.data.database.Favorite
 import com.rizqitsani.githubuser.databinding.FragmentUserDetailBinding
+import com.rizqitsani.githubuser.domain.models.User
 import com.rizqitsani.githubuser.domain.models.UserDetail
 import com.rizqitsani.githubuser.ui.userdetail.adapter.SectionsPagerAdapter
 import de.hdodenhof.circleimageview.CircleImageView
@@ -22,7 +22,14 @@ import de.hdodenhof.circleimageview.CircleImageView
 class UserDetailFragment : Fragment() {
     private var _binding: FragmentUserDetailBinding? = null
     private val binding get() = _binding
-    private val viewModel: UserDetailViewModel by activityViewModels()
+    private val viewModel: UserDetailViewModel by activityViewModels {
+        UserDetailViewModelFactory(
+            requireActivity().application
+        )
+    }
+
+    private lateinit var user: User
+    private var isFavorite = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +38,8 @@ class UserDetailFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentUserDetailBinding.inflate(inflater, container, false)
         val view = binding?.root
+
+        setHasOptionsMenu(true)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(requireActivity())
         val viewPager: ViewPager2 = binding?.viewPager as ViewPager2
@@ -46,11 +55,11 @@ class UserDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dataUser = UserDetailFragmentArgs.fromBundle(arguments as Bundle).user
+        user = UserDetailFragmentArgs.fromBundle(arguments as Bundle).user
 
-        viewModel.getUserDetail(dataUser.login)
-        viewModel.getFollowers(dataUser.login)
-        viewModel.getFollowing(dataUser.login)
+        viewModel.getUserDetail(user.login)
+        viewModel.getFollowers(user.login)
+        viewModel.getFollowing(user.login)
 
         viewModel.userDetail.observe(viewLifecycleOwner) {
             setUserDetailData(it)
@@ -61,15 +70,15 @@ class UserDetailFragment : Fragment() {
         }
 
         viewModel.status.observe(viewLifecycleOwner) {
-            showStatus(it)
+            showToast(it)
         }
 
         Glide.with(this)
-            .load(dataUser.avatarUrl)
+            .load(user.avatarUrl)
             .apply(RequestOptions().override(550, 550))
             .into(binding?.imgAvatar as CircleImageView)
 
-        binding?.tvUsername?.text = dataUser.login
+        binding?.tvUsername?.text = user.login
     }
 
     private fun setUserDetailData(userData: UserDetail) {
@@ -112,7 +121,46 @@ class UserDetailFragment : Fragment() {
         }
     }
 
-    private fun showStatus(message: String) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.user_detail_menu, menu)
+
+        viewModel.checkIfExist(user.login).observe(viewLifecycleOwner) { isExist ->
+            isFavorite = if (isExist != null) {
+                menu.findItem(R.id.menu_favorite).setIcon(R.drawable.ic_baseline_favorite_red_24)
+                true
+            } else {
+                menu.findItem(R.id.menu_favorite).setIcon(R.drawable.ic_baseline_favorite_border_24)
+                false
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_favorite -> {
+                if (isFavorite) {
+                    viewModel.deleteFromFavorites(user.login)
+                    showToast(getString(R.string.removed))
+                } else {
+                    viewModel.insertToFavorites(
+                        Favorite(
+                            login = user.login,
+                            avatarUrl = user.avatarUrl
+                        )
+                    )
+                    showToast(getString(R.string.added))
+                }
+
+                true
+            }
+
+            else -> true
+        }
+    }
+
+
+    private fun showToast(message: String) {
         if (message != "") {
             Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
         }

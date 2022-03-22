@@ -1,20 +1,27 @@
 package com.rizqitsani.githubuser.ui.userdetail
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.rizqitsani.githubuser.data.database.Favorite
 import com.rizqitsani.githubuser.data.network.ApiConfig
 import com.rizqitsani.githubuser.data.network.response.FollowerResponse
 import com.rizqitsani.githubuser.data.network.response.FollowingResponse
 import com.rizqitsani.githubuser.data.network.response.UserDetailResponse
+import com.rizqitsani.githubuser.data.repository.FavoriteRepository
 import com.rizqitsani.githubuser.domain.models.User
 import com.rizqitsani.githubuser.domain.models.UserDetail
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserDetailViewModel : ViewModel() {
+class UserDetailViewModel(application: Application) : ViewModel() {
+    private val mFavoriteRepository: FavoriteRepository = FavoriteRepository(application)
+
     private val _userDetail = MutableLiveData<UserDetail>()
     val userDetail: LiveData<UserDetail> = _userDetail
 
@@ -72,7 +79,7 @@ class UserDetailViewModel : ViewModel() {
         _isLoading.value = true
         _status.value = ""
         val client = ApiConfig.getApiService().getFollowers(username)
-        client.enqueue(object: Callback<List<FollowerResponse>>{
+        client.enqueue(object : Callback<List<FollowerResponse>> {
             override fun onResponse(
                 call: Call<List<FollowerResponse>>,
                 response: Response<List<FollowerResponse>>
@@ -105,7 +112,7 @@ class UserDetailViewModel : ViewModel() {
         _isLoading.value = true
         _status.value = ""
         val client = ApiConfig.getApiService().getFollowing(username)
-        client.enqueue(object: Callback<List<FollowingResponse>>{
+        client.enqueue(object : Callback<List<FollowingResponse>> {
             override fun onResponse(
                 call: Call<List<FollowingResponse>>,
                 response: Response<List<FollowingResponse>>
@@ -133,6 +140,21 @@ class UserDetailViewModel : ViewModel() {
             }
         })
     }
+
+    fun insertToFavorites(favorite: Favorite) {
+        viewModelScope.launch {
+            mFavoriteRepository.insert(favorite)
+        }
+    }
+
+    fun deleteFromFavorites(login: String) {
+        viewModelScope.launch {
+            mFavoriteRepository.delete(login)
+        }
+    }
+
+    fun checkIfExist(login: String): LiveData<Favorite> =
+        mFavoriteRepository.getFavoriteByLogin(login)
 
     companion object {
         private const val TAG = "UserDetailViewModel"
