@@ -69,6 +69,7 @@ class UserDetailViewModel(application: Application) : ViewModel() {
 
             override fun onFailure(call: Call<UserDetailResponse>, t: Throwable) {
                 _isLoading.value = false
+                _userDetail.value = UserDetail()
                 _status.value = "Terjadi kesalahan. Mohon coba beberapa saat lagi"
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
@@ -102,6 +103,7 @@ class UserDetailViewModel(application: Application) : ViewModel() {
 
             override fun onFailure(call: Call<List<FollowerResponse>>, t: Throwable) {
                 _isLoading.value = false
+                _listFollower.value = ArrayList()
                 _status.value = "Terjadi kesalahan. Mohon coba beberapa saat lagi"
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
@@ -135,6 +137,7 @@ class UserDetailViewModel(application: Application) : ViewModel() {
 
             override fun onFailure(call: Call<List<FollowingResponse>>, t: Throwable) {
                 _isLoading.value = false
+                _listFollowing.value = ArrayList()
                 _status.value = "Terjadi kesalahan. Mohon coba beberapa saat lagi"
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
