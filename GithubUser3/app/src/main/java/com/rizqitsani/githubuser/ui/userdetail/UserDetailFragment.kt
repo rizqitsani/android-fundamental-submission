@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -16,6 +18,7 @@ import com.rizqitsani.githubuser.data.database.Favorite
 import com.rizqitsani.githubuser.databinding.FragmentUserDetailBinding
 import com.rizqitsani.githubuser.domain.models.User
 import com.rizqitsani.githubuser.domain.models.UserDetail
+import com.rizqitsani.githubuser.ui.main.MainActivity
 import com.rizqitsani.githubuser.ui.userdetail.adapter.SectionsPagerAdapter
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -56,6 +59,8 @@ class UserDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         user = UserDetailFragmentArgs.fromBundle(arguments as Bundle).user
+
+        (activity as MainActivity).setActionBarTitle(user.login)
 
         viewModel.getUserDetail(user.login)
         viewModel.getFollowers(user.login)
@@ -154,8 +159,11 @@ class UserDetailFragment : Fragment() {
 
                 true
             }
-
-            else -> true
+            else -> NavigationUI.onNavDestinationSelected(
+                item,
+                requireView().findNavController()
+            )
+                    || super.onOptionsItemSelected(item)
         }
     }
 
